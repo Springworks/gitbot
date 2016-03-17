@@ -1,0 +1,8 @@
+instrumentation:
+    include-all-sources: true
+    root: ./src
+
+reporting:
+    print: summary
+    reports:
+        - lcov
