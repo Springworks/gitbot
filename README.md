@@ -11,7 +11,7 @@ Module containing convenience scripts against GitHub
 Install module globally:
 
 ```
-npm install -g @springworks/gitbot
+npm install -g gitbot
 ```
 
 ```bash
