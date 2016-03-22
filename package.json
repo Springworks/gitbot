@@ -1,7 +1,6 @@
 {
   "name": "gitbot",
   "description": "Module containing convenience scripts against GitHub",
-  "main": "lib/index.js",
   "scripts": {
     "lint": "eslint --cache .",
     "test": "NODE_ENV=test istanbul cover _mocha",
@@ -12,6 +11,9 @@
     "prepublish": "npm run build",
     "commit": "commit-wizard",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+  },
+  "bin": {
+    "gitbot": "./lib/bin/gitbot.js"
   },
   "repository": {
     "type": "git",
@@ -44,7 +46,9 @@
     "semantic-release": "4.3.5"
   },
   "dependencies": {
+    "@springworks/input-validator": "4.0.8",
     "babel-runtime": "6.5.0",
+    "commander": "2.9.0",
     "github": "0.2.4"
   },
   "config": {
