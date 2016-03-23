@@ -9,6 +9,7 @@ describe('test/git/git-service-test.js', () => {
       const git_service = git_wrapper.create(github_token);
       git_service.should.have.keys([
         'getPullRequest',
+        'getOpenPullRequestForSpecificBranch',
         'mergePullRequest',
         'deleteBranch',
       ]);
@@ -68,6 +69,71 @@ describe('test/git/git-service-test.js', () => {
 
       it('should reject with error', () => {
         return git_wrapper.internals.getPullRequest(github_service, '', '', 1).should.be.rejectedWith(mock_err);
+      });
+
+    });
+
+  });
+
+  describe('internals.getOpenPullRequestForSpecificBranch', () => {
+    let github_service;
+
+    describe('when call goes well', () => {
+
+      describe('when a pull request exists for this branch', () => {
+
+        beforeEach(() => {
+          github_service = {
+            pullRequests: {
+              getAll: sinon.stub().yieldsAsync(null, [{ url: 'https://api.github.com/repos/joe/test/pulls/4' }]),
+            },
+          };
+        });
+
+        it('should resolve with pull request', () => {
+          return git_wrapper.internals.getOpenPullRequestForSpecificBranch(github_service, 'the-owner', 'repo-name', 'my/feature')
+              .should
+              .be
+              .fulfilledWith({ url: 'https://api.github.com/repos/joe/test/pulls/4' });
+        });
+
+      });
+
+      describe('when no pull request exists for this branch', () => {
+
+        beforeEach(() => {
+          github_service = {
+            pullRequests: {
+              getAll: sinon.stub().yieldsAsync(null, []),
+            },
+          };
+        });
+
+        it('should reject with 404 Not Found', () => {
+          return git_wrapper.internals.getOpenPullRequestForSpecificBranch(github_service, 'the-owner', 'repo-name', 'my/feature')
+              .should
+              .be
+              .rejectedWith({ code: 404, message: 'No open pull request found for this branch: my/feature' });
+        });
+
+      });
+
+    });
+
+    describe('when call goes bad', () => {
+      let mock_err;
+
+      beforeEach(() => {
+        mock_err = new Error('Mock error');
+        github_service = {
+          pullRequests: {
+            getAll: sinon.stub().yieldsAsync(mock_err, null),
+          },
+        };
+      });
+
+      it('should reject with error', () => {
+        return git_wrapper.internals.getOpenPullRequestForSpecificBranch(github_service, 'the-owner', 'repo-name', 'my/feature').should.be.rejectedWith(mock_err);
       });
 
     });
