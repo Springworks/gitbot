@@ -6,13 +6,13 @@ const merge = require('../commands/merge');
 program
     .option('-O, --owner <owner>', 'repository owner')
     .option('-R, --repository-name <repository name>', 'repository name')
-    .option('-N, --pull-request-number <pull request number>', 'pull request number')
+    .option('-B, --branch-name <branch name>', 'branch name')
     .parse(process.argv);
 
 merge.run(process, {
       repo_owner: program.owner,
       repo_name: program.repositoryName,
-      pull_request_number: program.pullRequestNumber,
+      branch_name: program.branchName,
     })
     .then(() => {
       console.log('Done!');

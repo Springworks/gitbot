@@ -32,14 +32,14 @@ Merges pull request and deletes branch.
 
 **Usage**
 ```
-  Usage: gitbot-auto-merge [options]
+  Usage: gitbot-merge [options]
 
   Options:
 
-    -h, --help                                       output usage information
-    -O, --owner <owner>                              repository owner
-    -R, --repository-name <repository name>          repository name
-    -N, --pull-request-number <pull request number>  pull request number
+    -h, --help                               output usage information
+    -O, --owner <owner>                      repository owner
+    -R, --repository-name <repository name>  repository name
+    -B, --branch-name <branch name>          branch name
 ```
 
 **Example**

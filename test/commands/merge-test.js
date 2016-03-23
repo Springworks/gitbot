@@ -31,15 +31,15 @@ describe('test/commands/merge-test.js', () => {
           return merge.run(mock_process, params).should.be.fulfilled();
         });
 
-        it('should call getPullRequest with correct arguments', () => {
+        it('should call getOpenPullRequestForSpecificBranch with correct arguments', () => {
           return merge.run(mock_process, params).then(() => {
-            git_service.getPullRequest.should.be.calledWith(params.repo_owner, params.repo_name, params.pull_request_number);
+            git_service.getOpenPullRequestForSpecificBranch.should.be.calledWith(params.repo_owner, params.repo_name, params.branch_name);
           });
         });
 
         it('should call mergePullRequest with correct arguments', () => {
           return merge.run(mock_process, params).then(() => {
-            git_service.mergePullRequest.should.be.calledWith(params.repo_owner, params.repo_name, params.pull_request_number);
+            git_service.mergePullRequest.should.be.calledWith(params.repo_owner, params.repo_name, 17);
           });
         });
 
@@ -84,7 +84,7 @@ describe('test/commands/merge-test.js', () => {
       const required_params = [
         'repo_owner',
         'repo_name',
-        'pull_request_number',
+        'branch_name',
       ];
 
       required_params.forEach(required_param => {
@@ -115,6 +115,7 @@ describe('test/commands/merge-test.js', () => {
 internals.mockHappyGitService = () => {
   return {
     getPullRequest: sinon.stub().returns(Promise.resolve({ head: { ref: 'feature/super-feature' } })),
+    getOpenPullRequestForSpecificBranch: sinon.stub().returns(Promise.resolve({ number: 17, head: { ref: 'feature/super-feature' } })),
     mergePullRequest: sinon.stub().returns(Promise.resolve()),
     deleteBranch: sinon.stub().returns(Promise.resolve()),
   };
@@ -123,6 +124,7 @@ internals.mockHappyGitService = () => {
 internals.mockSadGitService = () => {
   return {
     getPullRequest: sinon.stub().returns(Promise.reject(new Error('Mock error'))),
+    getOpenPullRequestForSpecificBranch: sinon.stub().returns(Promise.reject(new Error('Mock error'))),
     mergePullRequest: sinon.stub().returns(Promise.resolve()),
     deleteBranch: sinon.stub().returns(Promise.resolve()),
   };
@@ -140,6 +142,6 @@ internals.createValidParams = () => {
   return {
     repo_owner: 'the_owner',
     repo_name: 'repo_name',
-    pull_request_number: 8,
+    branch_name: 'feature/super-feature',
   };
 };
