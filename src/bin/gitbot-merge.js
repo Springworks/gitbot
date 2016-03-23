@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const program = require('commander');
-const auto_merge = require('../commands/auto-merge');
+const merge = require('../commands/merge');
 
 program
     .option('-O, --owner <owner>', 'repository owner')
@@ -9,7 +9,7 @@ program
     .option('-N, --pull-request-number <pull request number>', 'pull request number')
     .parse(process.argv);
 
-auto_merge.run(process, {
+merge.run(process, {
       repo_owner: program.owner,
       repo_name: program.repositoryName,
       pull_request_number: program.pullRequestNumber,
@@ -19,6 +19,6 @@ auto_merge.run(process, {
       process.exit(0);
     })
     .catch(err => {
-      console.error('Error auto-merging pull request', err);
+      console.error('Error merging pull request', err);
       process.exit(1);
     });

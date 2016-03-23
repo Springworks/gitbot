@@ -19,8 +19,8 @@ npm install -g gitbot
 
   Commands:
 
-    auto-merge   merge pull request and delete branch
-    help [cmd]   display help for [cmd]
+    merge       merge pull request and delete branch
+    help [cmd]  display help for [cmd]
 
   Options:
 
