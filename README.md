@@ -2,6 +2,7 @@
 
 Module containing convenience scripts against GitHub
 
+[![Build Status](https://travis-ci.org/Springworks/gitbot.svg?branch=master)](https://travis-ci.org/Springworks/gitbot)
 ## Environment variables
 
 - `GITBOT_GITHUB_TOKEN`: Access token against GitHub which needs to have read/write permissions on that repository
