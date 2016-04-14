@@ -43,27 +43,37 @@ internals.getPullRequest = (github, repo_owner, repo_name, pull_request_number) 
 };
 
 internals.getOpenPullRequestForSpecificBranch = (github, repo_owner, repo_name, branch_name) => {
+  const head = `${repo_owner}:refs/heads/${branch_name}`;
   return new Promise((resolve, reject) => {
     github.pullRequests.getAll({
       user: repo_owner,
       repo: repo_name,
       state: 'open',
-      head: branch_name,
+      head: head,
     }, (err, res) => {
       if (err) {
         reject(err);
         return;
       }
 
-      if (res && Array.isArray(res) && res.length > 0) {
-        resolve(res[0]);
+      if (!res || !Array.isArray(res) || res.length === 0) {
+        reject(createError({
+          code: 404,
+          message: `No open pull request found for this branch: ${branch_name}`,
+        }));
         return;
       }
 
-      reject(createError({
-        code: 404,
-        message: `No open pull request found for this branch: ${branch_name}`,
-      }));
+      const filtered_pull_request = res.find(item => item.head.ref === branch_name);
+      if (!filtered_pull_request) {
+        reject(createError({
+          code: 404,
+          message: `Could not find the pull request for branch: ${branch_name}`,
+        }));
+        return;
+      }
+
+      resolve(filtered_pull_request);
     });
   });
 };

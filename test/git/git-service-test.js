@@ -85,7 +85,14 @@ describe('test/git/git-service-test.js', () => {
         beforeEach(() => {
           github_service = {
             pullRequests: {
-              getAll: sinon.stub().yieldsAsync(null, [{ url: 'https://api.github.com/repos/joe/test/pulls/4' }]),
+              getAll: sinon.stub().yieldsAsync(null, [
+                {
+                  url: 'https://api.github.com/repos/joe/test/pulls/4',
+                  head: {
+                    ref: 'my/feature',
+                  },
+                },
+              ]),
             },
           };
         });
@@ -94,7 +101,24 @@ describe('test/git/git-service-test.js', () => {
           return git_wrapper.internals.getOpenPullRequestForSpecificBranch(github_service, 'the-owner', 'repo-name', 'my/feature')
               .should
               .be
-              .fulfilledWith({ url: 'https://api.github.com/repos/joe/test/pulls/4' });
+              .fulfilledWith({
+                url: 'https://api.github.com/repos/joe/test/pulls/4',
+                head: {
+                  ref: 'my/feature',
+                },
+              });
+        });
+
+        it('should provide correct parameters to github.pullRequests.getAll', () => {
+          return git_wrapper.internals.getOpenPullRequestForSpecificBranch(github_service, 'the-owner', 'repo-name', 'my/feature')
+              .then(() => {
+                github_service.pullRequests.getAll.firstCall.args[0].should.eql({
+                  head: 'the-owner:refs/heads/my/feature',
+                  repo: 'repo-name',
+                  state: 'open',
+                  user: 'the-owner',
+                });
+              });
         });
 
       });
@@ -118,6 +142,31 @@ describe('test/git/git-service-test.js', () => {
 
       });
 
+      describe('when github for some reason responds with incorrect pull request', () => {
+
+        beforeEach(() => {
+          github_service = {
+            pullRequests: {
+              getAll: sinon.stub().yieldsAsync(null, [
+                {
+                  head: {
+                    ref: 'my/feature-2',
+                  },
+                },
+              ]),
+            },
+          };
+        });
+
+        it('should reject with 404 Not Found', () => {
+          return git_wrapper.internals.getOpenPullRequestForSpecificBranch(github_service, 'the-owner', 'repo-name', 'my/feature')
+              .should
+              .be
+              .rejectedWith({ code: 404, message: 'Could not find the pull request for branch: my/feature' });
+        });
+
+      });
+
     });
 
     describe('when call goes bad', () => {
@@ -133,7 +182,10 @@ describe('test/git/git-service-test.js', () => {
       });
 
       it('should reject with error', () => {
-        return git_wrapper.internals.getOpenPullRequestForSpecificBranch(github_service, 'the-owner', 'repo-name', 'my/feature').should.be.rejectedWith(mock_err);
+        return git_wrapper.internals.getOpenPullRequestForSpecificBranch(github_service, 'the-owner', 'repo-name', 'my/feature')
+            .should
+            .be
+            .rejectedWith(mock_err);
       });
 
     });
