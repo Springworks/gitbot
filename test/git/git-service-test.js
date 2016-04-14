@@ -97,6 +97,17 @@ describe('test/git/git-service-test.js', () => {
               .fulfilledWith({ url: 'https://api.github.com/repos/joe/test/pulls/4' });
         });
 
+        it('should provide correct parameters to github.pullRequests.getAll', () => {
+          return git_wrapper.internals.getOpenPullRequestForSpecificBranch(github_service, 'the-owner', 'repo-name', 'my/feature').then(() => {
+            github_service.pullRequests.getAll.firstCall.args[0].should.eql({
+              head: 'the-owner:refs/heads/my/feature',
+              repo: 'repo-name',
+              state: 'open',
+              user: 'the-owner',
+            });
+          });
+        });
+
       });
 
       describe('when no pull request exists for this branch', () => {

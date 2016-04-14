@@ -43,12 +43,13 @@ internals.getPullRequest = (github, repo_owner, repo_name, pull_request_number) 
 };
 
 internals.getOpenPullRequestForSpecificBranch = (github, repo_owner, repo_name, branch_name) => {
+  const head = `${repo_owner}:refs/heads/${branch_name}`;
   return new Promise((resolve, reject) => {
     github.pullRequests.getAll({
       user: repo_owner,
       repo: repo_name,
       state: 'open',
-      head: branch_name,
+      head: head,
     }, (err, res) => {
       if (err) {
         reject(err);
