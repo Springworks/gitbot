@@ -47,7 +47,7 @@
   },
   "dependencies": {
     "@springworks/error-factory": "2.0.9",
-    "@springworks/input-validator": "4.0.15",
+    "@springworks/input-validator": "4.0.16",
     "babel-runtime": "6.9.0",
     "commander": "2.9.0",
     "github": "0.2.4"
