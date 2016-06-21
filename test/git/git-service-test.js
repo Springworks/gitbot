@@ -20,8 +20,8 @@ describe('test/git/git-service-test.js', () => {
   describe('internals.getAuthenticatedGitHubClient', () => {
 
     it('should use version 3 of the API', () => {
-      git_wrapper.internals.getAuthenticatedGitHubClient(github_token)
-          .should.have.property('version', '3.0.0');
+      const client = git_wrapper.internals.getAuthenticatedGitHubClient(github_token);
+      client.config.should.have.property('version', '3.0.0');
     });
 
     it('should return a github client with auth set', () => {
