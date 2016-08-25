@@ -7,12 +7,11 @@ describe('test/git/git-service-test.js', () => {
 
     it('should return object with public functions', () => {
       const git_service = git_wrapper.create(github_token);
-      git_service.should.have.keys([
+      git_service.should.have.keys(
         'getPullRequest',
         'getOpenPullRequestForSpecificBranch',
         'mergePullRequest',
-        'deleteBranch',
-      ]);
+        'deleteBranch');
     });
 
   });
