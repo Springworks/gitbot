@@ -50,7 +50,7 @@
     "@springworks/input-validator": "4.0.24",
     "babel-runtime": "6.11.6",
     "commander": "2.9.0",
-    "github": "2.6.0"
+    "github": "3.0.0"
   },
   "config": {
     "pre-git": {
