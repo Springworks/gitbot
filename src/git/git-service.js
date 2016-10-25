@@ -29,7 +29,7 @@ internals.getAuthenticatedGitHubClient = github_token => {
 internals.getPullRequest = (github, repo_owner, repo_name, pull_request_number) => {
   return new Promise((resolve, reject) => {
     github.pullRequests.get({
-      user: repo_owner,
+      owner: repo_owner,
       repo: repo_name,
       number: pull_request_number,
     }, (err, res) => {
@@ -46,7 +46,7 @@ internals.getOpenPullRequestForSpecificBranch = (github, repo_owner, repo_name, 
   const head = `${repo_owner}:refs/heads/${branch_name}`;
   return new Promise((resolve, reject) => {
     github.pullRequests.getAll({
-      user: repo_owner,
+      owner: repo_owner,
       repo: repo_name,
       state: 'open',
       head: head,
@@ -81,7 +81,7 @@ internals.getOpenPullRequestForSpecificBranch = (github, repo_owner, repo_name, 
 internals.mergePullRequest = (github, repo_owner, repo_name, pull_request_number) => {
   return new Promise((resolve, reject) => {
     github.pullRequests.merge({
-      user: repo_owner,
+      owner: repo_owner,
       repo: repo_name,
       number: pull_request_number,
     }, (err, res) => {
@@ -98,7 +98,7 @@ internals.deleteBranch = (github, repo_owner, repo_name, branch_name) => {
   const ref = `heads/${branch_name}`;
   return new Promise((resolve, reject) => {
     github.gitdata.deleteReference({
-      user: repo_owner,
+      owner: repo_owner,
       repo: repo_name,
       ref: ref,
     }, (err, res) => {
