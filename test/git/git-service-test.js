@@ -115,7 +115,7 @@ describe('test/git/git-service-test.js', () => {
                   head: 'the-owner:refs/heads/my/feature',
                   repo: 'repo-name',
                   state: 'open',
-                  user: 'the-owner',
+                  owner: 'the-owner',
                 });
               });
         });
