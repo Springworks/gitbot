@@ -1,14 +1,16 @@
+sudo: false
 language: node_js
 node_js:
-- 4
+  - '4'
+  - '6'
+  - '7'
 script:
-- npm run lint
-- npm test
+  - npm run lint
+  - npm test
 notifications:
   email: false
-sudo: false
 after_success:
   - npm run semantic-release
 branches:
   except:
-    - "/^v\\d+\\.\\d+\\.\\d+$/"
+    - /^v\d+\.\d+\.\d+$/
