@@ -1,5 +1,7 @@
 # gitbot
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/Springworks/gitbot.svg)](https://greenkeeper.io/)
+
 Module containing convenience scripts against GitHub
 
 [![Build Status](https://travis-ci.org/Springworks/gitbot.svg?branch=master)](https://travis-ci.org/Springworks/gitbot)
