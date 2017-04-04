@@ -112,7 +112,7 @@ describe('test/git/git-service-test.js', () => {
           return git_wrapper.internals.getOpenPullRequestForSpecificBranch(github_service, 'the-owner', 'repo-name', 'my/feature')
               .then(() => {
                 github_service.pullRequests.getAll.firstCall.args[0].should.eql({
-                  head: 'the-owner:refs/heads/my/feature',
+                  head: 'the-owner:my/feature',
                   repo: 'repo-name',
                   state: 'open',
                   owner: 'the-owner',
